@@ -1,0 +1,5 @@
+body { background: #f8f9fa; }
+h1, h2, h3 { color: #222; }
+.card { border-radius: 8px; }
+.event-card-title { font-size: 1.05rem; font-weight: 600; }
+.small-muted { color: #666; font-size: .9rem; }
