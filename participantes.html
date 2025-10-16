@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Página do Participante</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 15px 30px;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      color: #0d6efd;
+      margin: 0;
+    }
+
+    .logout-btn {
+      border: none;
+      background-color: #dc3545;
+      color: white;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 6px;
+    }
+
+    .logout-btn:hover {
+      background-color: #bb2d3b;
+    }
+
+    .user-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-top: 30px;
+    }
+
+    .event-table {
+      margin-top: 40px;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    table th {
+      background-color: #0d6efd;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Cabeçalho -->
+  <header class="d-flex justify-content-between align-items-center">
+    <h1>Eventos Acadêmicos - Participante</h1>
+    <button class="logout-btn" onclick="logout()">Sair</button>
+  </header>
+
+  <main class="container">
+    <!-- Informações do usuário -->
+    <div class="user-card">
+      <h2 class="mb-4 text-primary">Informações do Usuário</h2>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="nome" class="form-label fw-bold">Nome:</label>
+          <input type="text" id="nome" class="form-control" readonly />
+        </div>
+        <div class="col-md-6">
+          <label for="email" class="form-label fw-bold">E-mail:</label>
+          <input type="text" id="email" class="form-control" readonly />
+        </div>
+        <div class="col-md-6">
+          <label for="perfil" class="form-label fw-bold">Perfil:</label>
+          <input type="text" id="perfil" class="form-control" readonly />
+        </div>
+        <div class="col-md-6">
+          <label for="instituicao" class="form-label fw-bold">Instituição de Ensino:</label>
+          <input type="text" id="instituicao" class="form-control" readonly />
+        </div>
+      </div>
+    </div>
+
+    <!-- Eventos inscritos -->
+    <div class="event-table">
+      <h2 class="mb-4 text-primary">Eventos Inscritos</h2>
+
+      <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>Data Inicial</th>
+              <th>Data Final</th>
+              <th>Horário</th>
+              <th>Local</th>
+              <th>Organizador</th>
+              <th>Vagas</th>
+            </tr>
+          </thead>
+          <tbody id="eventos-tabela">
+            <!-- Conteúdo gerado via JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // --- Verificação de autenticação ---
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuarioLogado) {
+      alert("Acesso negado! Faça login para continuar.");
+      window.location.href = "login.html";
+    } else {
+      document.getElementById("nome").value = usuarioLogado.nome || "Participante";
+      document.getElementById("email").value = usuarioLogado.email || "";
+      document.getElementById("perfil").value = usuarioLogado.perfil || "Estudante";
+      document.getElementById("instituicao").value =
+        usuarioLogado.instituicao || "Não informada";
+    }
+
+    // --- Lista de eventos simulada ---
+    const eventosInscritos = [
+      {
+        nome: "Seminário de IA",
+        tipo: "Seminário",
+        dataInicial: "10/11/2025",
+        dataFinal: "12/11/2025",
+        horario: "09h às 17h",
+        local: "Auditório A",
+        organizador: "Instituto Federal",
+        vagas: 50,
+      },
+      {
+        nome: "Palestra Ética",
+        tipo: "Palestra",
+        dataInicial: "25/11/2025",
+        dataFinal: "25/11/2025",
+        horario: "14h às 16h",
+        local: "Sala 101",
+        organizador: "Coordenação de TI",
+        vagas: 80,
+      },
+    ];
+
+    const tabela = document.getElementById("eventos-tabela");
+    eventosInscritos.forEach((ev) => {
+      const linha = `<tr>
+        <td>${ev.nome}</td>
+        <td>${ev.tipo}</td>
+        <td>${ev.dataInicial}</td>
+        <td>${ev.dataFinal}</td>
+        <td>${ev.horario}</td>
+        <td>${ev.local}</td>
+        <td>${ev.organizador}</td>
+        <td>${ev.vagas}</td>
+      </tr>`;
+      tabela.innerHTML += linha;
+    });
+
+    // --- Função logout ---
+    function logout() {
+      localStorage.removeItem("usuarioLogado");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
